@@ -1,16 +1,16 @@
 package aliz.tech.task3;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.nio.file.Files;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
@@ -19,37 +19,22 @@ import java.util.TreeMap;
 public class IndexFileCreator {
 
 	public static void create(File inputFile) throws IOException {
-		Map<String, List<Integer>> indexMap = new TreeMap<>();
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
+		Iterator<String[]> lineIterator = Files.lines(
+			inputFile.toPath()
+		).map(
+			line -> line.split(" ")
+		).iterator();
 
-		String currentLine = bufferedReader.readLine();
+		Map<String, List<Integer>> indexMap = new TreeMap<>();
 		int currentLineNumber = 1;
 
-		while (currentLine != null) {
-			Scanner scanner = new Scanner(currentLine);
+		while (lineIterator.hasNext()) {
+			String[] currentLine = lineIterator.next();
 
-			while (scanner.hasNext()) {
-				String currentWord = scanner.next();
-
-				if (indexMap.containsKey(currentWord)) {
-					List<Integer> lineNumbers = indexMap.get(currentWord);
-
-					if (!lineNumbers.contains(currentLineNumber)) {
-						lineNumbers.add(currentLineNumber);
-
-						indexMap.put(currentWord, lineNumbers);
-					}
-				}
-				else {
-					List<Integer> lineNumbers = new ArrayList<>();
-
-					lineNumbers.add(currentLineNumber);
-
-					indexMap.put(currentWord, lineNumbers);
-				}
+			for (String currentWord : currentLine) {
+				_storeWord(currentWord, indexMap, currentLineNumber);
 			}
 
-			currentLine = bufferedReader.readLine();
 			currentLineNumber++;
 		}
 
@@ -57,9 +42,7 @@ public class IndexFileCreator {
 			return;
 		}
 
-		String indexFileName = _getIndexFileName(inputFile.getName());
-
-		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(indexFileName));
+		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(_getIndexFileName(inputFile.getName())));
 
 		for (Map.Entry<String, List<Integer>> entry : indexMap.entrySet()) {
 			bufferedWriter.write(entry.getKey() + " " + _getLineNumbersString(entry.getValue()));
@@ -69,6 +52,26 @@ public class IndexFileCreator {
 
 		bufferedWriter.close();
 	}
+
+	private static void _storeWord(String currentWord, Map<String, List<Integer>> indexMap, int currentLineNumber) {
+		if (indexMap.containsKey(currentWord)) {
+			List<Integer> lineNumbers = indexMap.get(currentWord);
+
+			if (!lineNumbers.contains(currentLineNumber)) {
+				lineNumbers.add(currentLineNumber);
+
+				indexMap.put(currentWord, lineNumbers);
+			}
+		}
+		else {
+			List<Integer> lineNumbers = new ArrayList<>();
+
+			lineNumbers.add(currentLineNumber);
+
+			indexMap.put(currentWord, lineNumbers);
+		}
+	}
+
 
 	private static String _getIndexFileName(String inputFileName) {
 		int endPos = inputFileName.lastIndexOf('.');
