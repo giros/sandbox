@@ -1,0 +1,11 @@
+/
+/gyumolcs
+/gyumolcs/deli
+/gyumolcs/deli/citrus
+/gyumolcs/deli/citrus/narancs
+/gyumolcs/deli/citrus/citrom
+/gyumolcs/deli/egyeb
+/gyumolcs/deli/egyeb/banan
+/zoldseg
+/zoldseg/leves
+/zoldseg/leves/repa

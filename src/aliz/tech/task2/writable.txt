@@ -1,0 +1,7 @@
+/
+/gyumolcs
+/gyumolcs/deli
+/gyumolcs/deli/citrus
+/gyumolcs/deli/citrus/narancs
+/gyumolcs/deli/egyeb
+/zoldseg/tokfele/cukkini
