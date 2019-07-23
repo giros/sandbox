@@ -18,6 +18,13 @@ import java.util.TreeMap;
  */
 public class IndexFileCreator {
 
+	/**
+	 * Iterates through the lines of the input file and stores the words alongside their line number list in a sorted TreeMap.
+	 * Then writes the contents of the map to the output file.
+	 *
+	 * @param inputFile The input file.
+	 * @throws IOException if an IOException occurs.
+	 */
 	public static void create(File inputFile) throws IOException {
 		Iterator<String[]> lineIterator = Files.lines(
 			inputFile.toPath()
@@ -53,6 +60,14 @@ public class IndexFileCreator {
 		bufferedWriter.close();
 	}
 
+	/**
+	 * Stores the given word and the line number in the given Map.
+	 * If the word is already stored but with different line numbers, it adds the new line number to the value field.
+	 *
+	 * @param currentWord The word to store.
+	 * @param indexMap The Map to store the word in.
+	 * @param currentLineNumber The line number of the word.
+	 */
 	private static void _storeWord(String currentWord, Map<String, List<Integer>> indexMap, int currentLineNumber) {
 		if (indexMap.containsKey(currentWord)) {
 			List<Integer> lineNumbers = indexMap.get(currentWord);
@@ -72,13 +87,24 @@ public class IndexFileCreator {
 		}
 	}
 
-
+	/**
+	 * Constructs the name of the output file.
+	 *
+	 * @param inputFileName The name of the input file.
+	 * @return The name of the output file.
+	 */
 	private static String _getIndexFileName(String inputFileName) {
 		int endPos = inputFileName.lastIndexOf('.');
 
 		return inputFileName.substring(0, endPos) + INDEX_FILE_NAME_SUFFIX;
 	}
 
+	/**
+	 * Constructs a string of line numbers separated with commas in order to store them in the output file.
+	 *
+	 * @param lineNumbers The list of line numbers.
+	 * @return The string of line numbers separated with commas.
+	 */
 	private static String _getLineNumbersString(List<Integer> lineNumbers) {
 		if (lineNumbers.isEmpty()) {
 			return null;
