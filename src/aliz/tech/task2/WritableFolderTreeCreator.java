@@ -34,9 +34,9 @@ public class WritableFolderTreeCreator {
 		return _buildFolderTree(validWritableFolders);
 	}
 
-	private static FolderTreeItem _addFolderPath(FolderTreeItem folder, String[] newFolders) {
+	private static void _addFolderPath(FolderTreeItem folder, String[] newFolders) {
 		if (newFolders.length == 0) {
-			return folder;
+			return;
 		}
 
 		FolderTreeItem currentFolder = folder;
@@ -48,8 +48,6 @@ public class WritableFolderTreeCreator {
 
 			currentFolder = currentFolder.addChildWithName(newFolder);
 		}
-
-		return folder;
 	}
 
 	private static FolderTreeItem _buildFolderTree(List<String> folderPaths) {

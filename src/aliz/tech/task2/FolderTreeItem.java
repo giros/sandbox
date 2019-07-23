@@ -14,7 +14,7 @@ public class FolderTreeItem {
 	}
 
 	public FolderTreeItem addChildWithName(String name) {
-		FolderTreeItem child = getChildWithName(name);
+		FolderTreeItem child = _getChildWithName(name);
 
 		if (child != null) {
 			return child;
@@ -27,7 +27,7 @@ public class FolderTreeItem {
 		return child;
 	}
 
-	public FolderTreeItem getChildWithName(String name) {
+	private FolderTreeItem _getChildWithName(String name) {
 		for (FolderTreeItem child : _children) {
 			if (name.equals(child.getName())) {
 				return child;
